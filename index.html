@@ -10,8 +10,10 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 
   <link rel="stylesheet" href="css/main.css?v=1.0">
+  <link rel="stylesheet" href="deps/font-awesome/css/font-awesome.min.css">
   <script src="deps/jquery/jquery-3.1.1.min.js"></script>
   <script src="deps/lodash/lodash.min.js"></script>
+  <script src="deps/clipboardjs/clipboard.min.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/main.js"></script>
 </head>
@@ -24,7 +26,12 @@
       <textarea id="trans-in" onchange="transform()" onkeyup="transform()"></textarea>
     </section>
     <section id="trans-col" class="col col-2">
-      <h2>Transcription output:</h2>
+      <h2>
+        <button class="btn" data-clipboard-target="#trans-out" title="Copy to clipboard">
+          <i class="fa fa-clipboard"></i>
+        </button>
+        Transcription output:
+      </h2>
       <div id="trans-out">
       </div>
     </section>
