@@ -21,10 +21,12 @@
   <main>
     <section id="subtitle-col" class="col col-2">
       <h2>Paste subtitles/captions here:</h2>
-      <textarea></textarea>
+      <textarea id="trans-in" onchange="transform()" onkeyup="transform()"></textarea>
     </section>
-    <section id="transcribe-col" class="col col-2">
+    <section id="trans-col" class="col col-2">
       <h2>Transcription output:</h2>
+      <div id="trans-out">
+      </div>
     </section>
     <div class="clear-fix"></div>
   </main>
