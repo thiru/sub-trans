@@ -92,6 +92,10 @@ function isBlank(text) {
   return !text || text.trim().length <= 0;
 }
 
+function capitaliseFirstLetter(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 function pluralize(text, count, customPlural) {
   if (count == 1)
     return text;
