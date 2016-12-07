@@ -17,6 +17,7 @@ function transform()
 
   // Questioner speaking normalisation
   fullText = fullText.replace(/\[\s*(questioner|q\.)\s*\]/gi, "[Q1:]");
+  fullText = fullText.replace(/\[\s*q(\d+)\.*\s*\]/gi, "[Q$1:]");
   fullText = fullText.replace(/\[\s*q(uestioner|\.)\s*(\d+)\s*\]/gi, "[Q$2:]");
 
   // General laughter normalisation
@@ -43,17 +44,25 @@ function transform()
   if (!lines || !lines.length)
     return;
 
+  var finalHtml = "<p>";
+
   for (var i = 0; i < lines.length; i++) {
+    if (isBlank(lines[i]))
+      continue;
+
     var line = lines[i].trim();
     var lineLower = line.toLowerCase();
 
     if (lineLower.startsWith("[m:]") || lineLower.startsWith("[q"))
-      output.append("<br /><br />" + escapeHtml(line));
+      finalHtml += "</p><p>" + escapeHtml(line);
     else if (lineLower == "[laughter]")
-      output.append("<br /><br />" + escapeHtml(line) + "<br /><br />");
+      finalHtml += "</p><p>" + escapeHtml(line) + "</p><p>";
     else
-      output.append(escapeHtml(line));
+      finalHtml += escapeHtml(line);
 
-    output.append(" ");
+    finalHtml += " ";
   }
+
+  finalHtml += "</p>";
+  output.append(finalHtml);
 }
