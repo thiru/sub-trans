@@ -9,12 +9,30 @@ Global
   text-rendering: optimizeLegibility;
 }
 
+html, body, section
+{
+  height: 100%;
+}
+
 body
 {
   background: #FFF;
   color: #555; /* VAR COMMON-TEXT-COLOUR */
   margin: 0;
   padding: 0;
+}
+
+header
+{
+  font-size: 2em;
+  font-weight: bold;
+  height: 70px;
+  margin: 0;
+  padding: 0.5em 0.1em;
+}
+main
+{
+  height: calc(100% - 120px);
 }
 
 @media screen and (max-width: 480px) {
@@ -82,6 +100,13 @@ Main page
 
 #subtitle-col textarea
 {
-  height: 80vh;
+  height: 100%;
   width: 100%;
+}
+
+#trans-out
+{
+  background: #eee;
+  height: 100%;
+  overflow-y: scroll;
 }
