@@ -40,6 +40,8 @@ function transform()
           return p1 + capitaliseFirstLetter(p2);
         });
 
+  fullText = escapeHtml(fullText);
+
   var lines = fullText.split("\n");
   if (!lines || !lines.length)
     return;
@@ -54,11 +56,11 @@ function transform()
     var lineLower = line.toLowerCase();
 
     if (lineLower.startsWith("[m:]") || lineLower.startsWith("[q"))
-      finalHtml += "</p><p>" + escapeHtml(line);
+      finalHtml += "</p><p>" + line;
     else if (lineLower == "[laughter]")
-      finalHtml += "</p><p>" + escapeHtml(line) + "</p><p>";
+      finalHtml += "</p><p>" + line + "</p><p>";
     else
-      finalHtml += escapeHtml(line);
+      finalHtml += line;
 
     finalHtml += " ";
   }
