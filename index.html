@@ -14,6 +14,7 @@
   <script src="deps/jquery/jquery-3.1.1.min.js"></script>
   <script src="deps/lodash/lodash.min.js"></script>
   <script src="deps/clipboardjs/clipboard.min.js"></script>
+  <script src="deps/rxjs/rx.all.min.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/main.js"></script>
 </head>
@@ -23,7 +24,7 @@
   <main>
     <section id="subtitle-col" class="col col-2">
       <h2>Paste subtitles/captions here:</h2>
-      <textarea id="trans-in" onchange="transform()"></textarea>
+      <textarea id="trans-in" onchange="updateOutput(event.target.value)"></textarea>
     </section>
     <section id="trans-col" class="col col-2">
       <h2>

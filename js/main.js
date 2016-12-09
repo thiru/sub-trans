@@ -1,16 +1,25 @@
 $(document).ready(function() {
   new Clipboard('.btn');
+  watchAndTransform();
 });
 
-function transform()
-{
-  var fullText = $("#trans-in").val();
-  var output = $("#trans-out");
+function watchAndTransform() {
+  var keyUps =
+    Rx.Observable.fromEvent($("#trans-in"), "keyup")
+      .pluck("target", "value")
+      .debounce(250)
+      .distinctUntilChanged();
+  keyUps.subscribe(updateOutput);
+}
 
-  output.empty();
+function updateOutput(input) {
+    var transformed = transform(input);
+    $("#trans-out").empty().append(transformed);
+}
 
+function transform(fullText) {
   if (isBlank(fullText))
-    return;
+    return "";
 
   // Mooji speaking normalisation
   fullText = fullText.replace(/\[\s*m(\.|ooji)\s*\]/gi, "[M:]");
@@ -44,7 +53,7 @@ function transform()
 
   var lines = fullText.split("\n");
   if (!lines || !lines.length)
-    return;
+    return "";
 
   var finalHtml = "<p>";
 
@@ -66,5 +75,5 @@ function transform()
   }
 
   finalHtml += "</p>";
-  output.append(finalHtml);
+  return finalHtml;
 }
