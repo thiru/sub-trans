@@ -18,7 +18,7 @@ function transform()
   // Questioner speaking normalisation
   fullText = fullText.replace(/\[\s*(questioner|q\.)\s*\]/gi, "[Q1:]");
   fullText = fullText.replace(/\[\s*q(\d+)\.*\s*\]/gi, "[Q$1:]");
-  fullText = fullText.replace(/\[\s*q(uestioner|\.)\s*(\d+)\s*\]/gi, "[Q$2:]");
+  fullText = fullText.replace(/\[\s*q(uestioner|\.)\s*(\d+)[\s\.]*\]/gi, "[Q$2:]");
 
   // General laughter normalisation
   fullText = fullText.replace(/\[\s*laughter\s*\]/g, "[Laughter]");
