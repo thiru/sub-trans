@@ -24,7 +24,8 @@
   <main>
     <section id="subtitle-col" class="col col-2">
       <h2>Paste subtitles/captions here:</h2>
-      <textarea id="trans-in" onchange="updateOutput(event.target.value)"></textarea>
+      <textarea id="trans-in" onchange="updateOutput(event.target.value)"
+        onpaste="updateOutput(event.clipboardData.getData('Text'))"></textarea>
     </section>
     <section id="trans-col" class="col col-2">
       <h2>
