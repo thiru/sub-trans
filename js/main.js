@@ -7,7 +7,7 @@ function watchAndTransform() {
   var keyUps =
     Rx.Observable.fromEvent($("#trans-in"), "keyup")
       .pluck("target", "value")
-      .debounce(250)
+      .debounceTime(250)
       .distinctUntilChanged();
   keyUps.subscribe(updateOutput);
 }
