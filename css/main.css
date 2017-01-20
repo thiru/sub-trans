@@ -22,7 +22,7 @@ body
   padding: 0;
 }
 
-header
+#title
 {
   font-size: 2em;
   font-weight: bold;
@@ -30,9 +30,11 @@ header
   margin: 0;
   padding: 0.5em 0.1em;
 }
+
 main
 {
-  height: calc(100% - 120px);
+  height: calc(100% - 160px);
+  margin-top: 1em;
 }
 
 @media screen and (max-width: 480px) {
@@ -98,13 +100,26 @@ h2, h3, h4, h5, h6
 Main page
 ********************************/
 
-#subtitle-col textarea
+header
+{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#convert-type
+{
+  display: block;
+  font-size: 1.3em;
+  width: 100%;
+}
+
+#source-col textarea
 {
   height: 100%;
   width: 100%;
 }
 
-#trans-out
+#converted-out
 {
   background: #f7f7f7;
   height: 100%;

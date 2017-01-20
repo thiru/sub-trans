@@ -1,11 +1,11 @@
 $(document).ready(function() {
   new Clipboard('.btn');
-  watchAndTransform();
+  watchAndConvert();
 });
 
-function watchAndTransform() {
+function watchAndConvert() {
   var keyUps =
-    Rx.Observable.fromEvent($("#trans-in"), "keyup")
+    Rx.Observable.fromEvent($("#source-txt"), "keyup")
       .pluck("target", "value")
       .debounceTime(250)
       .distinctUntilChanged();
@@ -13,11 +13,11 @@ function watchAndTransform() {
 }
 
 function updateOutput(input) {
-    var transformed = transform(input);
-    $("#trans-out").empty().append(transformed);
+  var converted = convert(input);
+  $("#converted-out").empty().append(converted);
 }
 
-function transform(fullText) {
+function convert(fullText) {
   if (isBlank(fullText))
     return "";
 

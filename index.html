@@ -20,21 +20,26 @@
 </head>
 
 <body>
-  <header>Convert subtitles to transcription format</header>
+  <h1 id='title'>Subtitles/Transcript Conversion Tool</h1>
+  <select id='convert-type'>
+    <option value='1'>Subtitles -&gt; Transcript</option>
+    <option value='2'>Transcript -&gt; Subtitles</option>
+  </select>
   <main>
-    <section id="subtitle-col" class="col col-2">
-      <h2>Paste subtitles/captions here:</h2>
-      <textarea id="trans-in" onchange="updateOutput(event.target.value)"
-        onpaste="updateOutput(event.clipboardData.getData('Text'))"></textarea>
+    <section id="source-col" class="col col-2">
+      <header title='Paste here'>Source</header>
+      <textarea id='source-txt'
+                onchange="updateOutput(event.target.value)"
+                onpaste="updateOutput(event.clipboardData.getData('Text'))"></textarea>
     </section>
-    <section id="trans-col" class="col col-2">
-      <h2>
-        <button class="btn" data-clipboard-target="#trans-out" title="Copy to clipboard">
+    <section id="output-col" class="col col-2">
+      <header>
+        <button class="btn" data-clipboard-target="#converted-out" title="Copy to clipboard">
           <i class="fa fa-clipboard"></i>
         </button>
-        Transcription output:
-      </h2>
-      <div id="trans-out">
+        Output
+      </header>
+      <div id="converted-out">
       </div>
     </section>
     <div class="clear-fix"></div>
