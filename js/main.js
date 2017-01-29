@@ -1,6 +1,25 @@
+var domain = {
+  minLineLength: 6,
+  minLineLengthDefault: 6,
+
+  maxLineLength: 60,
+  maxLineLengthDefault: 60,
+
+  hasMinLineLength: function() {
+    return this.minLineLength > 0;
+  },
+
+  hasMaxLineLength: function() {
+    return this.maxLineLength > 0;
+  },
+};
+
 $(document).ready(function() {
+
   preselectConvertDir();
+
   new Clipboard('.btn');
+
   watchAndConvert();
 });
 
@@ -14,13 +33,67 @@ function preselectConvertDir() {
     document.getElementById('convert-type').selectedIndex = 1;
 }
 
+function updateMinLineLength(val) {
+  clearErrorMsg();
+
+  var newVal = domain.minLineLengthDefault;
+
+  if (!isBlank(val)) {
+    newVal = parseInt(val);
+
+    if (isNaN(newVal) || newVal < 0)
+      return setErrorMsg('The minimum line length must be zero or a positive number.');
+  }
+
+  domain.minLineLength = newVal;
+  updateOutput(document.getElementById('source-txt').value);
+}
+
+function updateMaxLineLength(val) {
+  clearErrorMsg();
+
+  var newVal = domain.maxLineLengthDefault;
+
+  if (!isBlank(val)) {
+    newVal = parseInt(val);
+
+    if (isNaN(newVal) || newVal < 0)
+      return setErrorMsg('The maximum line length must be zero or a positive number.');
+  }
+
+  domain.maxLineLength = newVal;
+  updateOutput(document.getElementById('source-txt').value);
+}
+
+function setErrorMsg(msg) {
+  var el = document.getElementById('error-msg');
+  el.innerText = msg;
+}
+function clearErrorMsg() {
+  document.getElementById('error-msg').innerText = '';
+}
+
 function watchAndConvert() {
-  var keyUps =
-    Rx.Observable.fromEvent($("#source-txt"), "keyup")
-      .pluck("target", "value")
-      .debounceTime(250)
-      .distinctUntilChanged();
-  keyUps.subscribe(updateOutput);
+  // Watch for changes to the source text <textarea>
+  Rx.Observable.fromEvent($("#source-txt"), "keyup")
+    .pluck("target", "value")
+    .debounceTime(250)
+    .distinctUntilChanged()
+    .subscribe(updateOutput);
+
+  // Watch for changes to the minimum line length option
+  Rx.Observable.fromEvent($("#min-line-length"), "keyup")
+    .pluck("target", "value")
+    .debounceTime(500)
+    .distinctUntilChanged()
+    .subscribe(updateMinLineLength);
+
+  // Watch for changes to the maximum line length option
+  Rx.Observable.fromEvent($("#max-line-length"), "keyup")
+    .pluck("target", "value")
+    .debounceTime(500)
+    .distinctUntilChanged()
+    .subscribe(updateMaxLineLength);
 }
 
 function updateOutput(input) {
@@ -85,9 +158,6 @@ function transToSub(fullText) {
   if (!txtLines || !txtLines.length)
     return "";
 
-  var minLineLength = 6;
-  var maxLineLength = 60;
-
   for (var i = 0; i < txtLines.length; i++) {
     var line = txtLines[i].trim();
 
@@ -95,11 +165,13 @@ function transToSub(fullText) {
       continue;
 
     // Attach very short lines to previous line
-    if (line.length < minLineLength && htmlLines.length) {
+    if (domain.hasMinLineLength()
+        && (line.length < domain.minLineLength) && htmlLines.length)
+    {
       htmlLines[htmlLines.length - 1] += (' ' + line);
     }
     // Split up long lines
-    else if (line.length > maxLineLength) {
+    else if (domain.hasMaxLineLength() && (line.length > domain.maxLineLength)) {
       var lastWhiteSpacePos = 0;
       var secondLastWhiteSpacePos = 0;
       var lastConsumedPos = -1;
@@ -107,7 +179,9 @@ function transToSub(fullText) {
       for (var j = 0; j < line.length; j++) {
         var nextLineLength = lastWhiteSpacePos - lastConsumedPos - 1;
 
-        if (nextLineLength > maxLineLength) {
+        if (domain.hasMaxLineLength()
+            && (nextLineLength > domain.maxLineLength))
+        {
           var newLine = line.substring(lastConsumedPos + 1, secondLastWhiteSpacePos);
           htmlLines.push(newLine);
           lastConsumedPos = secondLastWhiteSpacePos;
@@ -124,19 +198,27 @@ function transToSub(fullText) {
       if (lastConsumedPos < line.length) {
         var trailingLineLength = line.length - lastConsumedPos - 1;
 
-        if (trailingLineLength < minLineLength) {
+        if (domain.hasMinLineLength()
+            && (trailingLineLength < domain.minLineLength))
+        {
           htmlLines[htmlLines.length - 1] += (' ' + line.substring(lastConsumedPos));
         }
-        else if (trailingLineLength <= maxLineLength) {
+        else if (domain.hasMaxLineLength()
+                 && (trailingLineLength <= domain.maxLineLength))
+        {
           htmlLines.push(line.substring(lastConsumedPos));
         }
-        else {
+        else
+        {
           htmlLines.push(line.substring(lastConsumedPos, lastWhiteSpacePos));
 
-          if ((line.length - 1 - lastWhiteSpacePos) <= minLineLength)
+          if (domain.hasMinLineLength()
+              && (line.length - 1 - lastWhiteSpacePos) <= domain.minLineLength) {
             htmlLines[htmlLines.length - 1] += (' ' + line.substring(lastWhiteSpacePos));
-          else
+          }
+          else {
             htmlLines.push(line.substring(lastWhiteSpacePos));
+          }
         }
       }
     }

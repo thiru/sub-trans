@@ -111,11 +111,14 @@ header
   font-weight: bold;
 }
 
-#convert-type
+#options
 {
-  display: block;
   font-size: 1.3em;
-  width: 100%;
+}
+
+#error-msg
+{
+  margin: 0.5em 0;
 }
 
 #source-col textarea

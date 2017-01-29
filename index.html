@@ -20,11 +20,28 @@
 </head>
 
 <body>
+  <!-- Main Heading -->
   <h1 id='title'>Subtitles/Transcript Conversion Tool</h1>
-  <select id='convert-type'>
-    <option value='sub-trans'>Subtitles -&gt; Transcript</option>
-    <option value='trans-sub'>Transcript -&gt; Subtitles</option>
-  </select>
+
+  <!-- Options -->
+  <div id='options'>
+    <select id='convert-type' title='The source and output formats.'>
+      <option value='sub-trans'>Subtitles -&gt; Transcript</option>
+      <option value='trans-sub'>Transcript -&gt; Subtitles</option>
+    </select>
+    <input id='min-line-length'
+           placeholder='Min line length (6)'
+           title='The minimum number of characters in a line before it gets appended to the previous line. If no value is specified here, 6 characters is assumed. If 0 is specified lines will never be appended to prior lines.'
+           value='' />
+    <input id='max-line-length'
+           placeholder='Max line length (60)'
+           title='The maximum number of characters in a line before it gets broken into a new line. If no value is specified here, 60 characters is assumed. If 0 is specified lines will never be broken up.'
+           value='' />
+  </div>
+
+  <div id='error-msg' class='warning'></div>
+
+  <!-- Source/Output -->
   <main>
     <section id="source-col" class="col col-2">
       <header title='Paste here'>Source</header>
