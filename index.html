@@ -25,7 +25,7 @@
 
   <!-- Options -->
   <div id='options'>
-    <select id='convert-type' title='The source and output formats.'>
+    <select id='convert-type' onchange='onConvertTypeChanged()' title='The source and output formats.'>
       <option value='sub-trans'>Subtitles -&gt; Transcript</option>
       <option value='trans-sub'>Transcript -&gt; Subtitles</option>
     </select>

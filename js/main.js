@@ -65,6 +65,10 @@ function updateMaxLineLength(val) {
   updateOutput(document.getElementById('source-txt').value);
 }
 
+function onConvertTypeChanged() {
+  updateOutput(document.getElementById('source-txt').value);
+}
+
 function setErrorMsg(msg) {
   var el = document.getElementById('error-msg');
   el.innerText = msg;
