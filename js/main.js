@@ -27,10 +27,13 @@ function preselectConvertDir() {
   var url = new URL(window.location);
   var convertDir = url.searchParams.get('convert-to');
 
-  if (convertDir == 'transcripts')
+  if (convertDir == 'transcripts') {
     document.getElementById('convert-type').selectedIndex = 0;
-  else if (convertDir == 'subtitles')
+  }
+  else if (convertDir == 'subtitles') {
     document.getElementById('convert-type').selectedIndex = 1;
+    showLineLengthOptions();
+  }
 }
 
 function updateMinLineLength(val) {
@@ -66,7 +69,23 @@ function updateMaxLineLength(val) {
 }
 
 function onConvertTypeChanged() {
+  var convertDirIdx = document.getElementById('convert-type').selectedIndex;
+
+  if (convertDirIdx == 0)
+    hideLineLengthOptions();
+  else if (convertDirIdx == 1)
+    showLineLengthOptions();
+
   updateOutput(document.getElementById('source-txt').value);
+}
+
+function showLineLengthOptions() {
+  document.getElementById('min-line-length').classList.remove('hidden');
+  document.getElementById('max-line-length').classList.remove('hidden');
+}
+function hideLineLengthOptions() {
+  document.getElementById('min-line-length').classList.add('hidden');
+  document.getElementById('max-line-length').classList.add('hidden');
 }
 
 function setErrorMsg(msg) {
