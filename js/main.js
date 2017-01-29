@@ -1,7 +1,18 @@
 $(document).ready(function() {
+  preselectConvertDir();
   new Clipboard('.btn');
   watchAndConvert();
 });
+
+function preselectConvertDir() {
+  var url = new URL(window.location);
+  var convertDir = url.searchParams.get('convert-to');
+
+  if (convertDir == 'transcripts')
+    document.getElementById('convert-type').selectedIndex = 0;
+  else if (convertDir == 'subtitles')
+    document.getElementById('convert-type').selectedIndex = 1;
+}
 
 function watchAndConvert() {
   var keyUps =
