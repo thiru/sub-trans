@@ -158,7 +158,7 @@ function transToSub(fullText) {
   fullText = fullText.replace(/m\s*\:/gi, "[Mooji]");
 
   // Questioner speaking normalisation
-  fullText = fullText.replace(/q\s*\d*\s*\:/gi, "[Questioner]");
+  fullText = fullText.replace(/q\s*\d*\s*\:/gi, "[Q.]");
 
   // General laughter normalisation
   fullText = fullText.replace(/\[\s*Laughter\s*\]/g, "[laughter]");
