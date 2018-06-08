@@ -143,6 +143,9 @@ function transToSub(fullText) {
   // Remove ellipsis
   fullText = fullText.replace(/\.\.\./g, '');
 
+  // Replace slanted apostrophe with simple (vertical) quote
+  fullText = fullText.replace(/´/g, "'");
+
   // Remove all bracketed text except a few
   fullText = fullText.replace(/\[.+\]/gi, function (match) {
     var matchLower = match.toLowerCase();
