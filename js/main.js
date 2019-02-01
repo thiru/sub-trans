@@ -144,7 +144,7 @@ function transToSub(fullText) {
   fullText = fullText.replace(/\.\.\./g, '');
 
   // Replace slanted apostrophe with simple (vertical) quote
-  fullText = fullText.replace(/´/g, "'");
+  fullText = fullText.replace(/[´’‘]/g, "'");
 
   // Remove all bracketed text except a few
   fullText = fullText.replace(/\[.+\]/gi, function (match) {
