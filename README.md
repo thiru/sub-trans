@@ -1,5 +1,7 @@
 # Sub-Trans
 
-A simple website that transforms between subtitle and transcription formats.
+A simple website to convert subtitles/captions to transcripts and vice-versa.
 
-This website is 100% server-less.
+The website is 100% server-less.
+
+https://thiru.github.io/sub-trans/
