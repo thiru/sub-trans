@@ -25,19 +25,26 @@
 
   <!-- Options -->
   <div id='options'>
+    <!-- Conversion Direction -->
     <select id='convert-type' onchange='onConvertTypeChanged()' title='The source and output formats.'>
       <option value='sub-trans'>Subtitles -&gt; Transcript</option>
       <option value='trans-sub'>Transcript -&gt; Subtitles</option>
     </select>
+    <!-- Minimum Line Length (to subtitles) -->
     <input id='min-line-length'
            class='hidden'
            placeholder='Min line length (6)'
            title='The minimum number of characters in a line before it gets appended to the previous line. If no value is specified here, 6 characters is assumed. If 0 is specified lines will never be appended to prior lines.'
            value='' />
+    <!-- Maximum Line Length (to subtitles) -->
     <input id='max-line-length'
            class='hidden'
            placeholder='Max line length (60)'
            title='The maximum number of characters in a line before it gets broken into a new line. If no value is specified here, 60 characters is assumed. If 0 is specified lines will never be broken up.'
+           value='' />
+    <!-- Number of Lines to Join (to transcript) -->
+    <input id='num-join-lines'
+           placeholder='Num lines to join (10)'
            value='' />
   </div>
 

@@ -5,12 +5,19 @@ var domain = {
   maxLineLength: 60,
   maxLineLengthDefault: 60,
 
+  numJoinLines: 10,
+  numJoinLinesDefault: 10,
+
   hasMinLineLength: function() {
     return this.minLineLength > 0;
   },
 
   hasMaxLineLength: function() {
     return this.maxLineLength > 0;
+  },
+
+  hasNumJoinLines: function() {
+    return this.numJoinLines > 0;
   },
 };
 
@@ -29,6 +36,7 @@ function preselectConvertDir() {
 
   if (convertDir == 'transcripts') {
     document.getElementById('convert-type').selectedIndex = 0;
+    showJoinLinesOption();
   }
   else if (convertDir == 'subtitles') {
     document.getElementById('convert-type').selectedIndex = 1;
@@ -68,13 +76,33 @@ function updateMaxLineLength(val) {
   updateOutput(document.getElementById('source-txt').value);
 }
 
+function updateNumJoinLines(val) {
+  clearErrorMsg();
+
+  var newVal = domain.numJoinLinesDefault;
+
+  if (!isBlank(val)) {
+    newVal = parseInt(val);
+
+    if (isNaN(newVal) || newVal < 0)
+      return setErrorMsg('The number of lines to join must be zero or a positive number.');
+  }
+
+  domain.numJoinLines = newVal;
+  updateOutput(document.getElementById('source-txt').value);
+}
+
 function onConvertTypeChanged() {
   var convertDirIdx = document.getElementById('convert-type').selectedIndex;
 
-  if (convertDirIdx == 0)
+  if (convertDirIdx == 0) {
     hideLineLengthOptions();
-  else if (convertDirIdx == 1)
+    showJoinLinesOption();
+  }
+  else if (convertDirIdx == 1) {
     showLineLengthOptions();
+    hideJoinLinesOption();
+  }
 
   updateOutput(document.getElementById('source-txt').value);
 }
@@ -86,6 +114,12 @@ function showLineLengthOptions() {
 function hideLineLengthOptions() {
   document.getElementById('min-line-length').classList.add('hidden');
   document.getElementById('max-line-length').classList.add('hidden');
+}
+function showJoinLinesOption() {
+  document.getElementById('num-join-lines').classList.remove('hidden');
+}
+function hideJoinLinesOption() {
+  document.getElementById('num-join-lines').classList.add('hidden');
 }
 
 function setErrorMsg(msg) {
@@ -117,6 +151,13 @@ function watchAndConvert() {
     .debounceTime(500)
     .distinctUntilChanged()
     .subscribe(updateMaxLineLength);
+
+  // Watch for changes to the join lines option
+  Rx.Observable.fromEvent($("#num-join-lines"), "keyup")
+    .pluck("target", "value")
+    .debounceTime(500)
+    .distinctUntilChanged()
+    .subscribe(updateNumJoinLines);
 }
 
 function updateOutput(input) {
@@ -301,6 +342,8 @@ function subToTrans(fullText) {
   if (!txtLines || !txtLines.length)
     return "";
 
+  var linesSinceLastBreak = 0;
+
   var finalHtml = "<p>";
 
   for (var i = 0; i < txtLines.length; i++) {
@@ -309,13 +352,26 @@ function subToTrans(fullText) {
 
     var line = txtLines[i].trim();
 
-    if (/^[MQ]\d*\:/.test(line))
+    // Start a new line for speaker transition
+    if (/^[MQ]\d*\:/.test(line)) {
       finalHtml += "</p><p>" + line;
+      linesSinceLastBreak = 0;
+    }
     // Separate line for bracketed text (e.g. Youtube captions source)
-    else if (/^\[.+\]/.test(line))
+    else if (/^\[.+\]/.test(line)) {
       finalHtml += "</p><p>" + line + "</p><p>";
-    else
+      linesSinceLastBreak = 0;
+    }
+    else {
       finalHtml += line;
+      linesSinceLastBreak++;
+    }
+
+    // Break line if user-defined limit is reached
+    if (linesSinceLastBreak >= domain.numJoinLines) {
+      finalHtml += "</p><p>";
+      linesSinceLastBreak = 0;
+    }
 
     finalHtml += " ";
   }
