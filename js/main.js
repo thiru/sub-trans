@@ -311,7 +311,8 @@ function subToTrans(fullText) {
 
     if (/^[MQ]\d*\:/.test(line))
       finalHtml += "</p><p>" + line;
-    else if (line == "[laughter]")
+    // Separate line for bracketed text (e.g. Youtube captions source)
+    else if (/^\[.+\]/.test(line))
       finalHtml += "</p><p>" + line + "</p><p>";
     else
       finalHtml += line;
