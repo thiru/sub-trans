@@ -346,31 +346,43 @@ function subToTrans(fullText) {
 
   var finalHtml = "<p>";
 
+  var lastTimeStamp = "";
+
   for (var i = 0; i < txtLines.length; i++) {
     if (isBlank(txtLines[i]))
       continue;
 
-    var line = txtLines[i].trim();
+    var currLine = txtLines[i].trim();
 
     // Start a new line for speaker transition
-    if (/^[MQ]\d*\:/.test(line)) {
-      finalHtml += "</p><p>" + line;
+    if (/^[MQ]\d*\:/.test(currLine)) {
+      //console.log('new line [' + i + ']: ' + currLine);
+      finalHtml += "</p><p>" + lastTimeStamp + " " + currLine;
       linesSinceLastBreak = 0;
     }
     // Separate line for bracketed text (e.g. Youtube captions source)
-    else if (/^\[.+\]/.test(line)) {
-      finalHtml += "</p><p>" + line + "</p><p>";
+    else if (/^\[.+\]$/.test(currLine)) {
+      //console.log('new line [' + i + ']: ' + currLine);
+      finalHtml += "</p><p>" + lastTimeStamp + " " + currLine + "</p><p>";
       linesSinceLastBreak = 0;
+    }
+    // Skip timestamp for now (Youtube captions source)
+    else if (/^(\d+\:)+\d+$/.test(currLine)) {
+      //console.log('timestamp[' + i + ']: ' + currLine);
+      lastTimeStamp = currLine;
     }
     else {
-      finalHtml += line;
-      linesSinceLastBreak++;
-    }
-
-    // Break line if user-defined limit is reached
-    if (linesSinceLastBreak >= domain.numJoinLines) {
-      finalHtml += "</p><p>";
-      linesSinceLastBreak = 0;
+      // Break line if user-defined limit is reached
+      if (linesSinceLastBreak >= domain.numJoinLines) {
+        //console.log('about to break[' + i + '] on ' + lastTimeStamp + ' - ' + currLine);
+        finalHtml += "</p><p>" + lastTimeStamp + " " + currLine;
+        linesSinceLastBreak = 0;
+      }
+      else {
+        //console.log('new line [' + i + ']: ' + currLine);
+        finalHtml += currLine;
+        linesSinceLastBreak++;
+      }
     }
 
     finalHtml += " ";
