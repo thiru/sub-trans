@@ -5,8 +5,8 @@ var domain = {
   maxLineLength: 60,
   maxLineLengthDefault: 60,
 
-  numJoinLines: 10,
-  numJoinLinesDefault: 10,
+  numJoinLines: 30,
+  numJoinLinesDefault: 30,
 
   hasMinLineLength: function() {
     return this.minLineLength > 0;
